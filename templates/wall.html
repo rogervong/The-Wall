@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Wall</title>
+	</head>
+	<body>
+		<div class='header'>
+			<h1>CodingDojo Wall</h1>
+			{% for user in all_login %}
+				<h3>Welcome {{ user['first_name']}}</h3>
+			{% endfor %}
+			<a href="http://localhost:5000/">logoff</a>
+		</div>
+		<div>
+			<h3>Post a message</h3>
+			<form action='/message' method='post'>
+				<textarea name='message'></textarea>
+				<input type="submit" value="Post a Message">
+			</form>
+			{% for data in session['all_messages'] %}
+				{% for comment in session['all_comments'] %}
+					<p>{{ data['first_name'] }}</p>
+					<p>{{ data['last_name']}}</p>
+					<p>{{ data['message'] }}</p>
+					<p>{{ data['updated_at'] }}</p>
+					{% if session['user_id'] == data['user_id'] %}
+						<form action ="/delete_message/{{ data['message_id'] }}">
+							<input type="submit" value="Delete">
+						</form>
+					{% endif %}
+					<p>{{ comment['first_name'] }}</p>
+					<p>{{ comment['last_name']}}</p>
+					<p>{{ comment['comment'] }}</p>
+					<p>{{ comment['updated_at'] }}</p>
+					<form action="/comment/{{ data['id']}}" method='post'>
+						<textarea name='comment'></textarea>
+						<input type="submit" value="Post a Comment">
+					</form>
+				{% endfor %}
+			{% endfor %}
+		</div>
+	</body>
+</html>
